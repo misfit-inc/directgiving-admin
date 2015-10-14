@@ -1,0 +1,48 @@
+<header class="content-header row">
+  <h1 class="col-xs-8">Causes</h1>
+  <div class="actions text-right col-xs-4">
+    <a class="btn btn-primary" ui-sref="admin.causes.new">+ Add New</a>
+  </div>
+</header>
+
+<div class="content">
+  <div class="row">
+    <div ng-class="{ 'col-xs-6': formActive(), 'col-xs-12': !formActive() }">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Browse Causes</h3>
+          <div class="box-tools pull-right">
+            <div class="has-feedback">
+              <input type="text" class="form-control input-sm" placeholder="Filter..." ng-model="search">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </div>
+        </div>
+        <div class="box-body">
+          <div class="loader" ng-show="!causes.length">
+            <i class="fa fa-circle-o-notch fa-spin"></i>
+          </div>
+          <table class="table" ng-show="causes.length">
+            <thead>
+              <tr>
+                <th>Date Created</th>
+                <th>Name</th>
+                <th>Aspiration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="cause in causes | filter: search" href ui-sref="admin.causes.edit({ causeId: cause.id })">
+                <td>{{ cause.createdAt | date }}</td>
+                <td>{{ cause.name }}</td>
+                <td>{{ cause.aspiration }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div ng-show="formActive()" class="col-xs-6">
+      <div ui-view></div>
+    </div>
+  </div>
+</div>

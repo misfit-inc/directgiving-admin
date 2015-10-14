@@ -1,0 +1,47 @@
+<!-- Main Header -->
+<header class="main-header">
+
+  <a ui-sref="admin.dashboard" class="logo">
+    <span class="logo-mini"><strong>DG</strong></span>
+    <span class="logo-lg"><strong>DirectGiving</strong> Admin</span>
+  </a>
+
+  <!-- Header Navbar -->
+  <nav class="navbar navbar-static-top" role="navigation">
+    <!-- Sidebar toggle button-->
+    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+      <span class="sr-only">Toggle navigation</span>
+    </a>
+    <!-- Navbar Right Menu -->
+    <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
+        <li>
+          <a ng-click="logout()" href>Logout</a>
+        </li>
+        <li>
+          <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<aside class="main-sidebar">
+  <section class="sidebar">
+
+    <!-- Sidebar Menu -->
+    <ul class="sidebar-menu">
+      <li ng-repeat="item in menu" ng-class="{ 'active': isActive(item) }"><a ui-sref="{{ item.state }}">{{ item.label }}</a></li>
+    </ul><!-- /.sidebar-menu -->
+  </section>
+  <!-- /.sidebar -->
+</aside>
+<div ui-view="adminContent" class="content-wrapper"></div>
+<!-- Main Footer -->
+<footer class="main-footer">
+  <!-- To the right -->
+  <div class="pull-right hidden-xs">
+    Don't waste your time.
+  </div>
+  <!-- Default to the left -->
+  <strong>Copyright &copy; 2015 <a href="#">Misfit, Inc.</a></strong> All rights reserved.
+</footer>

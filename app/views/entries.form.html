@@ -1,0 +1,27 @@
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3>
+      <span ng-if="entry.id">Edit Entry</span>
+      <span ng-if="!entry.id">Add Entry</span>
+    </h3>
+    <div class="box-tools pull-right">
+      <button class="btn btn-box-tool" ui-sref="admin.entries"><i class="fa fa-times"></i></button>
+    </div>
+  </div>
+  <div class="box-body">
+    <form ng-submit="onSubmit()">
+      <formly-form model="entry" fields="entryFields">
+        <button type="button" ui-sref="admin.entries" class="btn btn-default">
+          Cancel
+        </button>
+        <button ng-if="cause.id" type="button" ng-click="deleteCause(cause)" class="btn btn-danger">
+          Delete
+        </button>
+        <button type="submit" class="btn btn-primary pull-right">
+          <span ng-if="entry.id">Save</span>
+          <span ng-if="!entry.id">Create</span>
+        </button>
+      </formly-form>
+    </form>
+  </div>
+</div>
