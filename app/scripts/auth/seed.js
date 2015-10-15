@@ -24,6 +24,13 @@ angular.module('dgAuth')
           'aspiration':'End hunger',
           'body':'A bunch of <strong>HTML-formatted</strong> text can make up this body, which will eventually come from a <a href="https://en.wikipedia.org/wiki/WYSIWYG">WYSIWYG</a> editor in the backend.',
           'indexText':'This text will describe the cause on the index page'
+        }).$promise.then(function (cause) {
+          ImpactGoal.create({
+            'description':'Give a kid a food',
+            'name':'Feed a kid',
+            'amount':25,
+            'causeId':cause.id
+          });
         });
         Cause.create({
           'name':'Aqua Teen Hunger Force',
@@ -35,13 +42,6 @@ angular.module('dgAuth')
           'aspiration':'End aqua teen hunger',
           'body':'Body text for the cause, can incorporate <em>fancy schmancy</em> <strong>HTML</strong>.',
           'indexText':'Aqua Teen Hunger Force is an American animated television series created by Dave Willis and Matt Maiellaro for Cartoon Network\'s late night programming block, Adult Swim.'
-        }).$promise.then(function (cause) {
-          ImpactGoal.create({
-            'description':'Give a kid a food',
-            'name':'Feed a kid',
-            'amount':25,
-            'causeId':cause.id
-          });
         });
       });
     }
