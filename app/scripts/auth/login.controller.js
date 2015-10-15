@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dgAuth')
-.controller('LoginCtrl', function ($scope, AuthService, $state, localStorageService) {
+.controller('LoginCtrl', function ($scope, AuthService, $state, localStorageService, Seed) {
   $scope.user = {};
 
   if (localStorageService.get('currentUser')) {
@@ -14,5 +14,9 @@ angular.module('dgAuth')
     }, function (err) {
       console.log(err);
     });
+  };
+
+  $scope.seedIt = function () {
+    Seed.it();
   };
 });

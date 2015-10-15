@@ -25,9 +25,10 @@ angular
     'formlyBootstrap',
     'dgAuth',
     'dgAPI',
-    'lbServices'
+    'lbServices',
+    'textAngular'
   ])
-  .config(function ($stateProvider, $urlRouterProvider, API_BASE, LoopBackResourceProvider, $httpProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, API_BASE, LoopBackResourceProvider, $httpProvider, formlyConfigProvider, $provide) {
 
     LoopBackResourceProvider.setUrlBase(API_BASE);
 
@@ -139,6 +140,22 @@ angular
         }
       };
     });
+
+    formlyConfigProvider.setType({
+      name: 'texteditor',
+      template: '<text-angular ng-model="model[options.key]"></text-angular>'
+    });
+
+    /*$provide.decorator('taOptions', function ($delegate) {
+      return {
+        toolbar: [
+          ['h1', 'h2', 'h3', 'p', 'quote', 'bold', 'italics', 'underline', 'ul', 'ol'],
+          ['html', 'insertImage', 'insertLink', 'insertVideo']
+          //['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
+          //['html', 'insertImage','insertLink', 'insertVideo']
+        ]
+      };
+    });*/
   })
   .controller('BodyCtrl', function ($scope, $state) {
     $scope.isLoginPage = function () {

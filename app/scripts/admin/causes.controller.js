@@ -69,7 +69,7 @@ angular.module('dgAdminApp')
     }
   },{
     key: 'body',
-    type: 'textarea',
+    type: 'texteditor',
     templateOptions: {
       label: 'Content',
       required: true
