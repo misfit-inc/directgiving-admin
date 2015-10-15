@@ -1,14 +1,19 @@
 'use strict';
 
 angular.module('dgAdminApp')
-.controller('AdminCtrl', function ($scope, $state, localStorageService, AuthService) {
+.controller('AdminCtrl', function ($scope, $state, $rootScope, localStorageService, AuthService) {
   if (!localStorageService.get('currentUser')) {
     $state.go('login');
+  } else {
+    $rootScope.currentUser = localStorageService.get('currentUser');
   }
 
   $scope.menu = [{
     label: 'Dashboard',
     state: 'admin.dashboard'
+  },{
+    label: 'Organization',
+    state: 'admin.organization'
   },{
     label: 'Causes',
     state: 'admin.causes'

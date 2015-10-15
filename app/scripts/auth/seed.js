@@ -8,7 +8,7 @@ angular.module('dgAuth')
       Admin.create({ email: 'ian.seyer@gmail.com', password: 'hi' });
       Donor.create({ email: 'test@test.gmail.com', password: 'hi' });
       Donor.create({ email: 'bob@burger.com', password: 'hi' });
-      
+
       Organization.create({
         'name': 'Unicef',
         'description': 'The biggest boy on the playground.',

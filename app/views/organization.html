@@ -1,0 +1,26 @@
+<header class="content-header row">
+  <h1 class="col-xs-8">Organization</h1>
+</header>
+
+<div class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3>Your Organization</h3>
+        </div>
+        <div class="box-body">
+          <form ng-submit="save()">
+            <formly-form model="organization" fields="organizationFields">
+              <button type="submit" class="btn btn-primary pull-right">Save</button>
+              <p ng-show="saved"><small>Saved <i class="fa fa-check"></i></small></p>
+              <p ng-show="saving"><small>Saving ...<i class="fa fa-circle-o-notch fa-spin"></i></small></p>
+            </formly-form>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    

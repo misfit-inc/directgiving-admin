@@ -122,6 +122,20 @@ angular
             return Cause.findById({ id: $stateParams.causeId });
           }
         }
+      })
+      .state('admin.organization', {
+        url: '/organization',
+        views: {
+          'adminContent': {
+            templateUrl: 'views/organization.html',
+            controller: 'OrganizationCtrl',
+            resolve: {
+              organization: function (Organization, localStorageService) {
+                return Organization.findOne({ filter: { where: { id: localStorageService.get('currentUser').organizationId }}});
+              }
+            }
+          }
+        } 
       });
 
     $httpProvider.interceptors.push(function($q, $location, LoopBackAuth, localStorageService, $rootScope) {
