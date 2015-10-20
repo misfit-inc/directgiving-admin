@@ -1,12 +1,16 @@
 'use strict';
 
 angular.module('dgAdminApp')
-.controller('CauseListCtrl', function ($scope, $rootScope, $state, causes, Cause) {
+.controller('CauseListCtrl', function ($scope, $rootScope, $state, causes, Cause, localStorageService) {
   $scope.causes = causes;
+  $scope.loading = false;
 
   $rootScope.$on('causes:updated', function () {
+    $scope.loading = true;
     console.log('updating causes');
-    $scope.causes = Cause.find();
+    $scope.causes = Cause.find({ filter: { where: { organizationId: localStorageService.get('currentUser').organizationId }}}, function () {
+      $scope.loading = false;
+    });
   });
 
   $scope.formActive = function () {
@@ -14,8 +18,23 @@ angular.module('dgAdminApp')
   };
 })
 
-.controller('CauseFormCtrl', function ($scope, $rootScope, cause, Cause, $state) {
+.controller('CauseFormCtrl', function ($scope, $rootScope, cause, impactGoal, Cause, ImpactGoal, $state) {
   $scope.cause = cause;
+
+  console.log(impactGoal);
+  console.log($scope.cause);
+
+  if (impactGoal && !$scope.cause.totalGoal) {
+    $scope.impactGoal = impactGoal;
+    $scope.cause.impactGoal = true;
+    $scope.cause.goalAmount = impactGoal.amount;
+  } else {
+    $scope.impactGoal = {};
+    $scope.cause.impactGoal = false;
+    $scope.cause.goalAmount = $scope.cause.totalGoal || '';
+  }
+
+  console.log($scope.cause.goalAmount);
 
   $scope.causeFields = [{
     key: 'name',
@@ -61,18 +80,31 @@ angular.module('dgAdminApp')
       required: true
     }
   },{
-    key: 'totalGoal',
-    type: 'input',
-    template: {
-      label: 'Total Goal',
-      description: 'Optional unless an impact goal is not set.'
-    }
-  },{
     key: 'body',
     type: 'texteditor',
     templateOptions: {
       label: 'Content',
       required: true
+    }
+  },{
+    key: 'goalAmount',
+    type: 'input',
+    templateOptions: {
+      label: 'Goal amount'
+    }
+  },{
+    key: 'goalText',
+    type: 'input',
+    templateOptions: {
+      label: 'Goal description',
+      description: 'Appears near the donate button, underneath the goal amount.'
+    }
+  },{
+    key: 'impactGoal',
+    type: 'checkbox',
+    templateOptions: {
+      label: 'Impact Goal?',
+      description: 'If checked, users get updates depending on how much they have donated.'
     }
   }];
 
@@ -86,9 +118,32 @@ angular.module('dgAdminApp')
   };
 
   $scope.onSubmit = function () {
-    Cause.updateOrCreate($scope.cause).$promise.then(function () {
-      $rootScope.$broadcast('causes:updated');
-      $state.go('admin.causes');
+    var newImpactGoal = {};
+
+    if ($scope.cause.impactGoal) {
+      newImpactGoal.amount = $scope.cause.goalAmount;
+      $scope.cause.totalGoal = 0;
+    } else {
+      $scope.cause.totalGoal = $scope.cause.goalAmount;
+    }
+
+    delete $scope.cause.impactGoal;
+    delete $scope.cause.goalAmount;
+
+    Cause.updateOrCreate($scope.cause).$promise.then(function (causeResponse) {
+      
+      if (newImpactGoal) {
+        ImpactGoal.updateOrCreate({
+          amount: newImpactGoal.amount,
+          causeId: causeResponse.id
+        }).$promise.then(function () {
+          $rootScope.$broadcast('causes:updated');
+          $state.go('admin.causes');
+        });
+      } else {
+        $rootScope.$broadcast('causes:updated');
+        $state.go('admin.causes');
+      }
     });
   };
 });

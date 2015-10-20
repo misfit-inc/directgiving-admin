@@ -96,8 +96,8 @@ angular
             templateUrl: 'views/causes.list.html',
             controller: 'CauseListCtrl',
             resolve: {
-              causes: function (Cause) {
-                return Cause.find();
+              causes: function (Cause, localStorageService) {
+                return Cause.find({ filter: { where: { organizationId: localStorageService.get('currentUser').organizationId }}});
               }
             }
           }
@@ -110,6 +110,9 @@ angular
         resolve: {
           cause: function () {
             return {};
+          },
+          impactGoal: function () {
+            return {};
           }
         }
       })
@@ -118,8 +121,22 @@ angular
         templateUrl: 'views/causes.form.html',
         controller: 'CauseFormCtrl',
         resolve: {
-          cause: function (Cause, $stateParams) {
-            return Cause.findById({ id: $stateParams.causeId });
+          cause: function (Cause, $stateParams, $q) {
+            var df = $q.defer();
+            Cause.findById({ id: $stateParams.causeId }).$promise.then(function (cause) {
+              console.log(cause);
+              df.resolve(cause);
+            });
+            return df.promise;
+          },
+          impactGoal: function (Cause, $stateParams, $q) {
+            var df = $q.defer();
+            Cause.impactGoal({ id: $stateParams.causeId }).$promise.then(function (goal) {
+              df.resolve(goal);
+            }, function () {
+              df.resolve(null);
+            });
+            return df.promise;
           }
         }
       })

@@ -19,10 +19,11 @@
           </div>
         </div>
         <div class="box-body">
-          <div class="loader" ng-show="!entries.length">
-            <i class="fa fa-circle-o-notch fa-spin"></i>
+          <div class="loader" ng-show="loading || !entries.length">
+            <i class="fa fa-circle-o-notch fa-spin" ng-show="loading"></i>
+            <p ng-show="!entries.length && !loading"><small>NO ENTRIES</small></p>
           </div>
-          <table class="table" ng-show="entries.length">
+          <table class="table" ng-show="entries.length && !loading">
             <thead>
               <tr>
                 <th>Date Created</th>

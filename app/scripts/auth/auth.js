@@ -33,6 +33,7 @@ angular.module('dgAuth', ['lbServices', 'LocalStorageModule', 'formly'])
             id: response.user.id,
             tokenId: response.id,
             email: response.user.email,
+            organizationId: response.user.organizationId,
             stripeId: response.user.stripeId || null
           });
           $rootScope.$broadcast('auth:login');

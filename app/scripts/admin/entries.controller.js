@@ -3,10 +3,14 @@
 angular.module('dgAdminApp')
 .controller('EntryListCtrl', function ($scope, $rootScope, $state, Entry, Cause, entries) {
   $scope.entries = entries;
+  $scope.loading = false;
 
   $rootScope.$on('entries:updated', function () {
+    $scope.loading = true;
     console.log('updating entries');
-    $scope.entries = Entry.find();
+    $scope.entries = Entry.find({}, function () {
+      $scope.loading = false;
+    });
   });
 
   $scope.formActive = function () {
@@ -22,7 +26,7 @@ angular.module('dgAdminApp')
     type: 'select',
     templateOptions: {
       label: 'Cause',
-      options: Cause.find(),
+      options: Cause.find({ filter: { where: { organizationId: $rootScope.currentUser.organizationId }}}),
       labelProp: 'name',
       valueProp: 'id'
     }
