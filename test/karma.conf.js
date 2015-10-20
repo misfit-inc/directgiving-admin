@@ -20,7 +20,32 @@ module.exports = function(config) {
     files: [
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
-      'test/spec/**/*.js'
+      'test/spec/**/*.js',
+      'bower_components/jquery/dist/jquery.js',
+      'bower_components/angular/angular.js',
+      'bower_components/angular-animate/angular-animate.js',
+      'bower_components/angular-cookies/angular-cookies.js',
+      'bower_components/angular-resource/angular-resource.js',
+      'bower_components/angular-route/angular-route.js',
+      'bower_components/angular-sanitize/angular-sanitize.js',
+      'bower_components/angular-touch/angular-touch.js',
+      'bower_components/angular-ui-router/release/angular-ui-router.js',
+      'bower_components/api-check/dist/api-check.js',
+      'bower_components/angular-formly/dist/formly.js',
+      'bower_components/angular-local-storage/dist/angular-local-storage.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/admin-lte/dist/js/app.js',
+      'bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js',
+      'bower_components/angular-ui-select/dist/select.js',
+      'bower_components/rangy/rangy-core.js',
+      'bower_components/rangy/rangy-classapplier.js',
+      'bower_components/rangy/rangy-highlighter.js',
+      'bower_components/rangy/rangy-selectionsaverestore.js',
+      'bower_components/rangy/rangy-serializer.js',
+      'bower_components/rangy/rangy-textrange.js',
+      'bower_components/textAngular/dist/textAngular.js',
+      'bower_components/textAngular/dist/textAngular-sanitize.js',
+      'bower_components/textAngular/dist/textAngularSetup.js'
     ],
 
     // list of files / patterns to exclude
