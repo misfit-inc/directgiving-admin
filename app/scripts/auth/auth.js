@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dgAuth', ['lbServices', 'LocalStorageModule', 'formly'])
+angular.module('dgAuth', ['lbServices', 'LocalStorageModule', 'formly', 'ui.router'])
 
 .factory('AuthService', function ($q, $rootScope, localStorageService, Admin) {
   // manage scope of user based on local storage

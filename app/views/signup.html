@@ -1,0 +1,17 @@
+<div class="login-box">
+  <div class="login-logo">
+    <b>DirectGiving</b> Admin
+  </div><!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">
+      <a ui-sref="login">Already have an account? Log in here.</a>
+    </p>
+    
+    <form ng-submit="submitForm()">
+      <formly-form model="organization" fields="organizationFields">
+        <button type="submit" class="btn btn-primary pull-right">Sign Up</button>
+      </formly-form>
+    </form>
+
+  </div><!-- /.login-box-body -->
+</div><!-- /.login-box -->

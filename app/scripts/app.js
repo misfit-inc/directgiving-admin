@@ -40,6 +40,11 @@ angular
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
       })
+      .state('signup', {
+        url: '/signup',
+        templateUrl: 'views/signup.html',
+        controller: 'SignUpCtrl'
+      })
       .state('admin', {
         url: '',
         abstract: true,
@@ -190,6 +195,6 @@ angular
   })
   .controller('BodyCtrl', function ($scope, $state) {
     $scope.isLoginPage = function () {
-      return $state.includes('login');
+      return $state.includes('login') || $state.includes('signup');
     };
   });

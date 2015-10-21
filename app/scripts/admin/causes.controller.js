@@ -130,6 +130,8 @@ angular.module('dgAdminApp')
     delete $scope.cause.impactGoal;
     delete $scope.cause.goalAmount;
 
+    $scope.cause.organizationId = $rootScope.currentUser.organizationId;
+
     Cause.updateOrCreate($scope.cause).$promise.then(function (causeResponse) {
       
       if (newImpactGoal) {

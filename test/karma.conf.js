@@ -18,11 +18,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'app/scripts/**/*.js',
-      'test/mock/**/*.js',
-      'test/spec/**/*.js',
       'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
+      'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-cookies/angular-cookies.js',
       'bower_components/angular-resource/angular-resource.js',
@@ -45,7 +43,12 @@ module.exports = function(config) {
       'bower_components/rangy/rangy-textrange.js',
       'bower_components/textAngular/dist/textAngular.js',
       'bower_components/textAngular/dist/textAngular-sanitize.js',
-      'bower_components/textAngular/dist/textAngularSetup.js'
+      'bower_components/textAngular/dist/textAngularSetup.js',
+      'app/scripts/app.js',
+      'app/scripts/lb-services.js',
+      'app/scripts/**/*.js',
+      'test/mock/**/*.js',
+      'test/spec/**/*.js',
     ],
 
     // list of files / patterns to exclude
