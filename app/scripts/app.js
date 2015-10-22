@@ -28,7 +28,7 @@ angular
     'lbServices',
     'textAngular'
   ])
-  .config(function ($stateProvider, $urlRouterProvider, API_BASE, LoopBackResourceProvider, $httpProvider, formlyConfigProvider, $provide) {
+  .config(function ($stateProvider, $urlRouterProvider, API_BASE, LoopBackResourceProvider, $httpProvider, formlyConfigProvider) {
 
     LoopBackResourceProvider.setUrlBase(API_BASE);
 
@@ -164,6 +164,7 @@ angular
       return {
         responseError: function(rejection) {
           if (rejection.status === 401) {
+            console.log('not authorized');
             //Now clearing the loopback values from client browser for safe logout...
             LoopBackAuth.clearUser();
             LoopBackAuth.clearStorage();

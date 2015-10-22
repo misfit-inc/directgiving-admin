@@ -37,6 +37,9 @@ angular.module('dgAdminApp')
   $scope.logout = function () {
     AuthService.logout().then(function () {
       $state.go('login');
+    }, function () {
+      localStorageService.set('currentUser', null);
+      $state.go('login');
     });
   };
 });

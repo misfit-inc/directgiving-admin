@@ -85,6 +85,13 @@ angular.module('dgAuth', ['lbServices', 'LocalStorageModule', 'formly', 'ui.rout
       }
 
       return df.promise;
+    },
+    /**
+     * Returns true if user is authenticated
+     * @return {Boolean} true if authenticated, false otherwise
+     */
+    isAuthenticated: function () {
+      return Admin.isAuthenticated();
     }
   };
 });

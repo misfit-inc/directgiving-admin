@@ -3,8 +3,9 @@
 angular.module('dgAuth')
 .controller('LoginCtrl', function ($scope, AuthService, $state, localStorageService, Seed) {
   $scope.user = {};
+  $scope.loginError = {};
 
-  if (localStorageService.get('currentUser')) {
+  if (AuthService.isAuthenticated()) {
     $state.go('admin.dashboard');
   }
 
@@ -13,6 +14,7 @@ angular.module('dgAuth')
       $state.go('admin.dashboard');
     }, function (err) {
       console.log(err);
+      $scope.loginError = err.data;
     });
   };
 

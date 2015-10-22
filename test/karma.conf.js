@@ -72,7 +72,8 @@ module.exports = function(config) {
     // Which plugins to enable
     plugins: [
       'karma-phantomjs-launcher',
-      'karma-jasmine'
+      'karma-jasmine',
+      'karma-nyan-reporter'
     ],
 
     // Continuous Integration mode
@@ -91,5 +92,8 @@ module.exports = function(config) {
     // },
     // URL root prevent conflicts with the site root
     // urlRoot: '_karma_'
+    
+    // use the cat
+    reporters: ['nyan']
   });
 };

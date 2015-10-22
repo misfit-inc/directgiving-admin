@@ -7,7 +7,6 @@ angular.module('dgAdminApp')
 
   $rootScope.$on('causes:updated', function () {
     $scope.loading = true;
-    console.log('updating causes');
     $scope.causes = Cause.find({ filter: { where: { organizationId: localStorageService.get('currentUser').organizationId }}}, function () {
       $scope.loading = false;
     });
@@ -18,23 +17,20 @@ angular.module('dgAdminApp')
   };
 })
 
-.controller('CauseFormCtrl', function ($scope, $rootScope, cause, impactGoal, Cause, ImpactGoal, $state) {
+.controller('CauseFormCtrl', function ($scope, $rootScope, cause, impactGoal, Cause, ImpactGoal, $state, $window) {
   $scope.cause = cause;
 
-  console.log(impactGoal);
-  console.log($scope.cause);
-
-  if (impactGoal && !$scope.cause.totalGoal) {
-    $scope.impactGoal = impactGoal;
-    $scope.cause.impactGoal = true;
-    $scope.cause.goalAmount = impactGoal.amount;
-  } else {
-    $scope.impactGoal = {};
-    $scope.cause.impactGoal = false;
-    $scope.cause.goalAmount = $scope.cause.totalGoal || '';
+  if (cause.name) {
+    if (impactGoal && !$scope.cause.totalGoal) {
+      $scope.impactGoal = impactGoal;
+      $scope.cause.impactGoal = true;
+      $scope.cause.goalAmount = impactGoal.amount;
+    } else {
+      $scope.impactGoal = {};
+      $scope.cause.impactGoal = false;
+      $scope.cause.goalAmount = $scope.cause.totalGoal || '';
+    }
   }
-
-  console.log($scope.cause.goalAmount);
 
   $scope.causeFields = [{
     key: 'name',
@@ -109,19 +105,23 @@ angular.module('dgAdminApp')
   }];
 
   $scope.deleteCause = function (cause) {
-    if (window.confirm('Are you sure?')) {
-      Cause.deleteById({ id: cause.id }).$promise.then(function () {
-        $rootScope.$broadcast('causes:updated');
-        $state.go('admin.causes');
-      });
+    if (cause.id) {
+      if ($window.confirm('Are you sure?')) {
+        Cause.deleteById({ id: cause.id }).$promise.then(function () {
+          $rootScope.$broadcast('causes:updated');
+          $state.go('admin.causes');
+        });
+      }
+    } else {
+      return false;
     }
   };
 
   $scope.onSubmit = function () {
-    var newImpactGoal = {};
+    var newImpactGoal;
 
     if ($scope.cause.impactGoal) {
-      newImpactGoal.amount = $scope.cause.goalAmount;
+      newImpactGoal = $scope.cause.goalAmount;
       $scope.cause.totalGoal = 0;
     } else {
       $scope.cause.totalGoal = $scope.cause.goalAmount;
@@ -133,10 +133,10 @@ angular.module('dgAdminApp')
     $scope.cause.organizationId = $rootScope.currentUser.organizationId;
 
     Cause.updateOrCreate($scope.cause).$promise.then(function (causeResponse) {
-      
+
       if (newImpactGoal) {
         ImpactGoal.updateOrCreate({
-          amount: newImpactGoal.amount,
+          amount: newImpactGoal,
           causeId: causeResponse.id
         }).$promise.then(function () {
           $rootScope.$broadcast('causes:updated');
