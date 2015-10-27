@@ -7,8 +7,7 @@ angular.module('dgAdminApp')
 
   $rootScope.$on('entries:updated', function () {
     $scope.loading = true;
-    console.log('updating entries');
-    $scope.entries = Entry.find({}, function () {
+    $scope.entries = Entry.find({}).$promise.then(function () {
       $scope.loading = false;
     });
   });

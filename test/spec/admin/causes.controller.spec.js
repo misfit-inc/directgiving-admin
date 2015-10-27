@@ -82,6 +82,23 @@ describe('Controller: CauseFormCtrl', function () {
         impactGoal: false
       };
 
+  afterEach(function () {
+    mockCause = {
+      name: 'New Cause',
+      featuredImage: 'http://test.com/image.png',
+      position: {
+        lat: '12.5',
+        lng: '-55.167'
+      },
+      aspiration: 'Do a thing',
+      indexText: 'Index text',
+      body: 'Body of the cause',
+      goalAmount: 1200,
+      goalText: 'Text describing the goal',
+      impactGoal: false
+    };
+  });
+
   describe('creating a new Cause', function () {
     beforeEach(inject(function ($controller, $rootScope) {
       scope = $rootScope.$new();
@@ -145,12 +162,14 @@ describe('Controller: CauseFormCtrl', function () {
       expect($state.go).toHaveBeenCalledWith('admin.causes');
     }));
 
-    xit('should create an impact goal if necessary', inject(function (Cause, $q, $rootScope, $state, $httpBackend, ImpactGoal) {
+    it('should create an impact goal if necessary', inject(function (Cause, $q, $rootScope, $state, $httpBackend, ImpactGoal) {
       var df = $q.defer(),
           df2 = $q.defer();
 
       $httpBackend.expectGET('views/login.html').respond(201, '');
       scope.cause = mockCause;
+
+      var impactGoalAmount = mockCause.goalAmount;
 
       scope.cause.impactGoal = true;
 
@@ -192,7 +211,7 @@ describe('Controller: CauseFormCtrl', function () {
       $rootScope.$digest();
 
       expect(ImpactGoal.updateOrCreate).toHaveBeenCalledWith({
-        amount: mockCause.goalAmount,
+        amount: impactGoalAmount,
         causeId: 3
       });
 
@@ -223,7 +242,7 @@ describe('Controller: CauseFormCtrl', function () {
     }));
 
     it('should set the total goal of the form', function () {
-      expect(scope.cause.impactGoal).toBe(false);
+      expect(scope.impactGoal).toEqual({});
       expect(scope.cause.goalAmount).toBe(scope.cause.totalGoal);
     });
 
@@ -245,6 +264,68 @@ describe('Controller: CauseFormCtrl', function () {
       expect(Cause.deleteById).toHaveBeenCalledWith({ id: existingCause.id });
 
       df.resolve();
+      scope.$apply();
+
+      //expect($rootScope.$broadcast).toHaveBeenCalledWith('causes:updated');
+      expect($state.go).toHaveBeenCalledWith('admin.causes');
+    }));
+  });
+
+  describe('editing an existing Cause with an impact goal', function () {
+    var impactGoal = {
+      amount: 250,
+      id: 3,
+      causeId: 3
+    };
+
+    beforeEach(inject(function ($controller, $rootScope) {
+      scope = $rootScope.$new();
+
+      existingCause = mockCause;
+      existingCause.id = 3;
+      existingCause.totalGoal = 0;
+
+      CauseFormCtrl = $controller('CauseFormCtrl', {
+        $scope: scope,
+        cause: existingCause,
+        impactGoal: impactGoal
+      });
+
+      $rootScope.currentUser = {
+        email: 'test@test.com',
+        organizationId: 1
+      };
+    }));
+
+    it('should set the total goal of the form to the impact goal amount', function () {
+      expect(scope.cause.impactGoal).toBe(true);
+      expect(scope.cause.goalAmount).toBe(impactGoal.amount);
+    });
+
+    it('should allow deletion of the cause and impact goal', inject(function (Cause, ImpactGoal, $q, $window, $state, $httpBackend) {
+      var df = $q.defer();
+      var df2 = $q.defer();
+
+      $httpBackend.expectGET('views/login.html').respond(201, '');
+
+      spyOn(Cause, 'deleteById').and.returnValue({
+        $promise: df.promise
+      });
+      spyOn(ImpactGoal, 'deleteById').and.returnValue({
+        $promise: df2.promise
+      });
+      spyOn($window, 'confirm').and.returnValue(true);
+      //spyOn($rootScope, '$broadcast').and.stub();
+      spyOn($state, 'go').and.stub();
+
+      scope.deleteCause(existingCause);
+
+      expect($window.confirm).toHaveBeenCalled();
+      expect(Cause.deleteById).toHaveBeenCalledWith({ id: existingCause.id });
+      expect(ImpactGoal.deleteById).toHaveBeenCalledWith({ id: impactGoal.id });
+
+      df.resolve();
+      df2.resolve();
       scope.$apply();
 
       //expect($rootScope.$broadcast).toHaveBeenCalledWith('causes:updated');

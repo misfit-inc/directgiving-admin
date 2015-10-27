@@ -111,6 +111,11 @@ angular.module('dgAdminApp')
           $rootScope.$broadcast('causes:updated');
           $state.go('admin.causes');
         });
+
+        // delete impact goal as well
+        if (impactGoal.id) {
+          ImpactGoal.deleteById({ id: $scope.impactGoal.id });
+        }
       }
     } else {
       return false;
