@@ -5,9 +5,9 @@ angular.module('dgAuth')
   $scope.user = {};
   $scope.loginError = {};
 
-  if (AuthService.isAuthenticated()) {
+  /*if (AuthService.isAuthenticated()) {
     $state.go('admin.dashboard');
-  }
+  }*/
 
   $scope.login = function () {
     AuthService.login($scope.user).then(function () {
